@@ -53,6 +53,10 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
+-- Simple Pipe Seperator Widget
+local seperator = wibox.widget.textbox("|")
+local spacer = wibox.widget.textbox(" ")
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.floating,
@@ -196,7 +200,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     local names = {"Terminal", "Web", "Main", "4", "5", "6"}
     local l = awful.layout.suit;
-    local layouts = {l.tile, l.spiral, l.floating, l.tile, l.floating, l.floating}
+    local layouts = {l.tile, l.tile, l.floating, l.tile, l.floating, l.floating}
     awful.tag(names, s, layouts)
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -215,7 +219,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = 20})
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -223,15 +227,27 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
+            spacer,
+            seperator,
+            spacer,
             s.mytaglist,
             s.mypromptbox,
+            spacer,
+            seperator
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            spacer,
+            seperator,
             mykeyboardlayout,
+            seperator,
+            spacer,
             wibox.widget.systray(),
             mytextclock,
+            spacer,
+            seperator,
+            spacer,
             s.mylayoutbox,
         },
     }
